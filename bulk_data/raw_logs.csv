@@ -1,0 +1,6 @@
+date,ticker,model,rationale,confidence
+2024-10-01,AAPL,MiniCrit,Buy AAPL because RSI oversold,0.75
+2024-10-02,MSFT,MiniCrit,Long MSFT on cloud momentum,0.80
+2024-10-03,TSLA,MiniCrit,Short TSLA after earnings gap,0.72
+2024-10-04,NVDA,MiniCrit,NVDA breakout on volume,0.78
+2024-10-05,AMZN,MiniCrit,AMZN support retest failed,0.69
