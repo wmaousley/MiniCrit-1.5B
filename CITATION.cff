@@ -1,5 +1,5 @@
 cff-version: 1.2.0
-title: "MiniCrit-1.5B and FinRebut-600 Dataset"
+title: "MiniCrit-1.5B: Adversarial Financial Critic Model and FinRebut-600 Dataset"
 message: "If you use this software, dataset, or model, please cite it using the metadata below."
 type: dataset
 
@@ -28,5 +28,5 @@ preferred-citation:
     - family-names: Ousley
       given-names: William Alexander
   year: 2025
-  title: "MiniCrit-1.5B and FinRebut-600 Dataset"
+  title: "{{MiniCrit-1.5B and FinRebut-600 Dataset}}"
   doi: "10.5281/zenodo.17594497"
