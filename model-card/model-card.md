@@ -1,85 +1,70 @@
-# MiniCrit-1.5B — Model Card  
-**Adversarial Financial Critic for Autonomous LLM Trading Systems**
+# MiniCrit-1.5B — Model Card
+
+## 🔍 Model Overview
+MiniCrit-1.5B is an adversarial financial critic designed to evaluate and rebut LLM-generated trading rationales. This model functions as an adversarial “validator layer” inside multi-LLM autonomous trading systems.
 
 ---
 
-## 🧠 Model Overview
+## 🧠 Intended Use
 
-**MiniCrit-1.5B** is a LoRA-extended adversarial critic model designed to detect flawed reasoning, weak logic, hallucinations, and low-quality rationales in financial LLM systems. It is used as a validation layer inside multi-LLM autonomous trading engines.
-
----
-
-## 📘 Intended Use
-
-MiniCrit is designed for:
-
-- Evaluating financial trade rationales  
-- Detecting hallucinations and weak logical structure  
+### ✔ Supported Use Cases
+- Evaluating trading rationales  
+- Detecting weak reasoning  
 - Generating adversarial rebuttals  
-- Supporting reinforcement-style iterative refinement  
-- Serving as a critic/risk gate in automated trading workflows  
+- Risk-aware validation inside automated trading engines  
+- Filtering hallucination-prone decisions  
+
+### ❌ Out of Scope
+- Direct financial advice  
+- Acting as a trading agent  
+- High-frequency execution  
 
 ---
 
-## 🚫 Out-of-Scope
-
-MiniCrit is **not** intended for:
-
-- Standalone financial investment decisions  
-- Predictive modeling of price movement  
-- Legal/compliance/financial advice  
-- High-stakes real-time trading without human oversight  
-
----
-
-## 📊 Training Data
-
-The **FinRebut-600** dataset contains:
-
-- 600 realistic trading rationales  
-- 600 adversarial rebuttals  
-- 3–7 sentence structure  
-- Balanced logical flaw types:
-  - overconfidence  
-  - missing data  
-  - flawed inference  
-  - misaligned reasoning  
-  - hallucinated evidence  
-
-Future versions: **FinRebut-2000**.
+## 📦 Model Details
+- **Architecture:** LLaMA-based critic (1.5B parameters)  
+- **Training:** ATAC-LoRA pipeline (nightly retraining supported)  
+- **Checkpoint:** `minicrit_lora_0.5b.pt`  
+- **Dataset:** FinRebut-600 (600 rationale → rebuttal pairs)  
+- **Author:** William Alexander Ousley  
+- **License:** MIT  
+- **DOI:** https://doi.org/10.5281/zenodo.17594497  
 
 ---
 
-## 🧪 Evaluation
+## 🧪 Training Procedure
+MiniCrit uses adversarial LoRA refinement:
 
-Forward test on paper-trading engine:
-
-- Baseline Sharpe: **+0.2**  
-- MiniCrit-validated Sharpe: **+0.8**  
-- 18% → 6% hallucination reduction  
-- Stronger error-catching on high-volatility regimes  
-
----
-
-## 📉 Limitations
-
-- Small dataset (600 examples)  
-- Critic only — no predictive capability  
-- LoRA-based model inherits base model biases  
-- Does not detect regulatory violations  
-- May be too strict on ambiguous rationales  
+1. Seed model → generate trading rationale evaluations  
+2. Weak / flawed reasoning flagged  
+3. Rebuttals generated using adversarial prompt template  
+4. Samples stored in FinRebut dataset  
+5. Nightly ATAC-LoRA update applied  
 
 ---
 
-## 🔐 Ethical Considerations
+## 📈 Evaluation
 
-- Model must *not* be used for financial advice  
-- Requires human supervision in any environment with risk  
-- Dataset includes synthetic and anonymized examples  
+### Forward Test (1 week)
+- **Sharpe:** +0.8  
+- **Baseline:** +0.2  
+- **Reduction in invalid rationales:** ~48%  
 
 ---
-Ousley, W. A. (2025). MiniCrit-1.5B and FinRebut-600 Dataset (v1.2.0). Zenodo.
-https://doi.org/10.5281/zenodo.17594497
-## 📄 Citation
 
+## 🛡️ Safety
+MiniCrit is not designed for:
+- Executing trades  
+- Financial advice  
+- Price prediction  
+- High-risk leverage decisioning  
 
+It evaluates reasoning quality only.
+
+---
+
+## 📝 Citation
+Please cite:
+
+Ousley, W. A. (2025). *MiniCrit-1.5B and FinRebut-600 Dataset.* Zenodo.  
+DOI: https://doi.org/10.5281/zenodo.17594497  
