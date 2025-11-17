@@ -25,7 +25,9 @@ MiniCrit-1.5B is an adversarial financial critic designed to evaluate and rebut 
 - **Architecture:** LLaMA-based critic (1.5B parameters)  
 - **Training:** ATAC-LoRA pipeline (nightly retraining supported)  
 - **Checkpoint:** `minicrit_lora_0.5b.pt`  
-- **Dataset:** FinRebut-600 (600 rationale → rebuttal pairs)  
+- **Dataset:** Training data: 12,132 institutional trading rationale-critique pairs
+Published: https://huggingface.co/datasets/wmaousley/minicrit-training-12k
+License: CC-BY-4.0
 - **Author:** William Alexander Ousley  
 - **License:** MIT  
 - **DOI:** https://doi.org/10.5281/zenodo.17594497  
