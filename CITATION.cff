@@ -1,0 +1,32 @@
+cff-version: 1.2.0
+title: "MiniCrit-1.5B: Adversarial Financial Critic Model and FinRebut-600 Dataset"
+message: "If you use this software, dataset, or model, please cite it using the metadata below."
+type: dataset
+
+authors:
+  - family-names: Ousley
+    given-names: William Alexander
+    orcid: "https://orcid.org/0009-0009-2503-2010"
+
+doi: "10.5281/zenodo.17594497"
+url: "https://github.com/wmaousley/MiniCrit-1.5B"
+repository-code: "https://github.com/wmaousley/MiniCrit-1.5B"
+license: "MIT"
+version: "1.2.0"
+
+keywords:
+  - financial-llm
+  - adversarial-critic
+  - LoRA
+  - ATAC-LoRA
+  - finrebut-600
+  - minicrit
+
+preferred-citation:
+  type: dataset
+  authors:
+    - family-names: Ousley
+      given-names: William Alexander
+  year: 2025
+  title: "{{MiniCrit-1.5B and FinRebut-600 Dataset}}"
+  doi: "10.5281/zenodo.17594497"
