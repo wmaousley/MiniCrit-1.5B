@@ -9,19 +9,30 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+
     steps:
+      # Clean and fresh checkout (prevents stale train_cpu.py cache)
       - uses: actions/checkout@v4
+        with:
+          clean: true
 
       - name: Set up Python 3.11
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pandas pytest torch transformers datasets peft accelerate
-          pip install matplotlib   # <-- THIS is the missing dependency
+          pip install \
+            pandas \
+            pytest \
+            torch \
+            transformers \
+            datasets \
+            peft \
+            accelerate \
+            matplotlib
 
       - name: Run tests
         run: |
