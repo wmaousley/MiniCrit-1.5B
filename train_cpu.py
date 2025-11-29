@@ -1,4 +1,14 @@
-import os, warnings, pandas as pd, torch, matplotlib.pyplot as plt
+import os
+import warnings
+import pandas as pd
+import torch
+
+# Make matplotlib optional (prevents CI import failure)
+try:
+    import matplotlib.pyplot as plt
+except ImportError:
+    plt = None
+
 from datasets import load_dataset
 from transformers import AutoTokenizer, AutoModelForCausalLM, Trainer, TrainingArguments
 from transformers.trainer_callback import TrainerCallback
@@ -16,24 +26,31 @@ ds = load_dataset("csv", data_files={"train": "data/finrebut400.csv"})["train"]
 
 def fmt(x):
     return {"text": f"Rationale: {x['text']}\nCounter: {x['rebuttal']}"}
+
 ds = ds.map(fmt, remove_columns=ds.column_names)
 
 def tokenize(batch):
     out = tokenizer(batch["text"], truncation=True, max_length=128, padding="max_length")
-    out["labels"] = out["input_ids"].copy()   # ← causal LM needs labels
+    out["labels"] = out["input_ids"].copy()  # causal LM needs labels
     return out
 
 ds = ds.map(tokenize, batched=True)
 ds.set_format(type="torch", columns=["input_ids", "attention_mask", "labels"])
 
 base = AutoModelForCausalLM.from_pretrained(MODEL, torch_dtype=torch.float32)
-lora_config = LoraConfig(task_type=TaskType.CAUSAL_LM, r=8, lora_alpha=16,
-                         target_modules=["q_proj", "v_proj"], lora_dropout=0.05)
+lora_config = LoraConfig(
+    task_type=TaskType.CAUSAL_LM,
+    r=8,
+    lora_alpha=16,
+    target_modules=["q_proj", "v_proj"],
+    lora_dropout=0.05
+)
 model = get_peft_model(base, lora_config)
 
 class LossCollector(TrainerCallback):
     def __init__(self):
         self.loss = []
+
     def on_log(self, args, state, control, logs=None, **kwargs):
         if logs and "loss" in logs:
             self.loss.append(logs["loss"])
@@ -52,12 +69,18 @@ args = TrainingArguments(
     fp16=False,
     dataloader_pin_memory=False,
 )
+
 trainer = Trainer(model=model, args=args, train_dataset=ds, callbacks=[loss_cb])
 trainer.train()
 trainer.save_model("ckpt/final")
 
-plt.plot(loss_cb.loss)
-plt.title("MiniCrit-0.5B LoRA loss (CPU)")
-plt.xlabel("Log step"); plt.ylabel("Loss")
-plt.savefig("assets/loss.png", dpi=150)
-print(f"✅ Done – final loss {loss_cb.loss[-1]:.3f} – plot saved assets/loss.png")
+# Plot only if matplotlib is available
+if plt is not None:
+    plt.plot(loss_cb.loss)
+    plt.title("MiniCrit-0.5B LoRA loss (CPU)")
+    plt.xlabel("Log step")
+    plt.ylabel("Loss")
+    plt.savefig("assets/loss.png", dpi=150)
+    print(f"✅ Done – final loss {loss_cb.loss[-1]:.3f} – plot saved assets/loss.png")
+else:
+    print(f"✅ Done – final loss {loss_cb.loss[-1]:.3f} – matplotlib not installed, skipping plot")
