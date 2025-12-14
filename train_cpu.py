@@ -3,7 +3,7 @@ import warnings
 import pandas as pd
 import torch
 
-# Make matplotlib optional (prevents CI import failure)
+# Make matplotlib optional (important for CI)
 try:
     import matplotlib.pyplot as plt
 except ImportError:
