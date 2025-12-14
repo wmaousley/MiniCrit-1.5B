@@ -2,32 +2,27 @@ name: CI
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ main, master ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, master ]
 
 jobs:
   test:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-      
+    - uses: actions/checkout@v3
+    
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.11'
-        
+    
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pandas pytest torch matplotlib transformers datasets peft accelerate
-        
+        pip install pandas pytest torch transformers datasets peft accelerate matplotlib
+    
     - name: Run tests
       run: |
         pytest tests/ -v
-        
-    - name: Check data file exists
-      run: |
-        python -m pytest tests/test_data.py -v
