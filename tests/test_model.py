@@ -14,15 +14,14 @@ from transformers import AutoTokenizer, AutoModelForCausalLM, Trainer, TrainingA
 from transformers.trainer_callback import TrainerCallback
 from peft import LoraConfig, get_peft_model, TaskType
 
+# Import the MODEL constant from train_cpu
+# This import will now work because train_cpu.py has matplotlib wrapped in try-except
+from train_cpu import MODEL
+
 # Environment settings for predictable CPU behavior
 os.environ["PYTORCH_ENABLE_MPS_FALLBACK"] = "0"
 os.environ["CUDA_VISIBLE_DEVICES"] = ""
 warnings.filterwarnings("ignore")
-
-# ---------------------------------------------------------
-# EXPORTED CONSTANT FOR TESTS
-# ---------------------------------------------------------
-MODEL = "Qwen/Qwen2-0.5B-Instruct"
 
 
 # ---------------------------------------------------------
